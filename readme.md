@@ -14,6 +14,7 @@ cd /var/repo`
 mkdir adminrcr.git
 cd adminrcr.git
 git init --bare
+git symbolic-ref HEAD refs/heads/main
 cd hooks/
 ```
 
