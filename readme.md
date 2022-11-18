@@ -82,6 +82,8 @@ su - username
 composer install --no-dev
 ```
 
+If you install new packages in your project, make note that you will need to install them on future pushes. Alternatively, you could update the `post-receive` script to account for this.
+
 #### SET CORRECT PERMISSIONS
 
 It is good to double check we have proper write permissions on a few directories.
