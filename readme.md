@@ -7,8 +7,9 @@ The following is instructions on how to configure the application using Litespee
 
 Configure the Repo for pushing updates to
 
-`mkdir /var/repo
-cd /var/repo`
+```mkdir /var/repo
+cd /var/repo
+```
 
 Initialize Repo
 
