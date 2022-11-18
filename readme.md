@@ -10,19 +10,26 @@ Configure the Repo for pushing updates to
 `mkdir /var/repo
 cd /var/repo`
 
+Initialize Repo
+
 ```
-mkdir adminrcr.git
-cd adminrcr.git
+mkdir projectname.git
+cd projectname.git
 git init --bare
-git symbolic-ref HEAD refs/heads/main
-cd hooks/
 ```
+
+Change HEAD to branch you intend to be pushing. Default is `master` but typically we want `main` now
+
+`git symbolic-ref HEAD refs/heads/main`
 
 
 ### Post Receive
 
 create a receiving hook
-`vi post-receive`
+```
+cd hooks/
+vi post-receive
+```
 
 ```
 #!/bin/sh
@@ -45,7 +52,7 @@ Add production remote on your *LOCAL MACHINE* so you can push updates to product
 
 Add Remote
 
-`git remote add production ssh://root@server.com/var/repo/adminrcr.git`
+`git remote add production ssh://root@server.com/var/repo/projectname.git`
 
 
 PUSH to production!
@@ -53,20 +60,9 @@ PUSH to production!
 `git push production master`
 
 
-#### FIX FPM SECURITY FOR LARAVEL
+#### INSTALL COMPOSER FOR USER
 
-`vi /etc/php/7.2/fpm/php.ini`
-
-Make sure the following is uncommented with the value of 0
-
-`cgi.fix_pathinfo=0`
-
-Restart FPM
-
-`service php7.2-fpm restart`
-
-
-#### INSTALL COMPOSER
+this installs composer command for the user. You will only need to do this on your first Laravel Project.
 
 `cd ~ &&
 curl -sS https://getcomposer.org/installer | php`
@@ -75,21 +71,18 @@ curl -sS https://getcomposer.org/installer | php`
 
 
 
+#### INSTALL COMPOSER IN PROJECT
 
+It is a security risk to install composer as root user. Therefore, always `su - username` first. In Cyberpanel, when you create a website, the site is added to the home directory. If you aren't sure about the username cyberpanel created, navigate to `/home` and type the `ls -l` command which will show you the user that owns each project.
 
-
-#### INSTALL COMPOSER
-
-`cd /var/www/html/admin.repaircostreferee.com
-composer install --no-dev`
+```
+su - username
+composer install --no-dev
+```
 
 #### SET CORRECT PERMISSIONS
 
-Ownership permissions
-
-`chown -R :www-data /var/www/html/admin.repaircostreferee.com`
-
-RWX Permissions
+It is good to double check we have proper write permissions on a few directories.
 
 `chmod -R 775 /var/www/laravel/storage`
 
@@ -97,25 +90,12 @@ RWX Permissions
 
 #### CONFIGURE .ENV
 
+If you introduced new env variables in your project, it is a good idea to commit them to your example env file. This way you can see them when you deploy a new project. Your regular .env file is an excluded file from git as a security measure. This way you don't accidently commit real credentials to your repo.
+
 `cp .env.example .env`
 
-Noted variables that should be updated
+Update necessary env variables.
 
-```
-APP_ENV=production
-APP_DEBUG=false
-
-DB_DATABASE=rcr
-DB_USERNAME=rcr
-DB_PASSWORD=XXXXXXXXX
-
-MAIL_DRIVER=smtp
-MAIL_HOST=sendgrid.com
-MAIL_PORT=2525
-MAIL_USERNAME=XXXXXXXXXXX
-MAIL_PASSWORD=XXXXXXXXXXX
-MAIL_ENCRYPTION=null
-```
 
 #### GENERATE ENCRYPTION KEY
 
@@ -129,20 +109,4 @@ MAIL_ENCRYPTION=null
 
 `php artisan migrate`
 
-#### INITIALIZE FIRST USER
-
-Start Tinker
-
-`php artisan tinker`
-
-Create User and Save
-
-```
-$user = new App\User;
-$user->name = 'Admin';
-$user->email = 'eric.schnell@repaircostreferee.com';
-$user->password = Hash::make('password');
-$user->save();
-
-exit
-```
+Note: If you've already populated your database in a test environment and want to maintain that same data, you can simply do a dump of the database and import it from cyberpanel using phpmyadmin instead of installing with a clean database. This is entirely dependent on your project needs.
