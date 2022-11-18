@@ -119,4 +119,4 @@ Note: If you've already populated your database in a test environment and want t
 
 ### Future Pushes
 
-Your project has not been properly deployed. If you need to push more changes in the future, just rerun `git push production main` from your local environment.
+Your project has now been properly deployed. If you need to push more changes in the future, just rerun `git push production main` from your local environment.
