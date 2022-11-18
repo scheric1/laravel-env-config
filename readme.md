@@ -103,6 +103,8 @@ Update necessary env variables.
 
 `php artisan key:generate`
 
+Note, if your migrating existing data from a project and have encrypted any data, you will want to copy the key from the existing project instead of generating a new encryption key.
+
 #### CLEAR CACHE
 
 `php artisan config:cache`
