@@ -59,7 +59,7 @@ Add Remote
 
 PUSH to production!
 
-`git push production master`
+`git push production main`
 
 
 #### INSTALL COMPOSER FOR USER
@@ -116,3 +116,7 @@ Note, if your migrating existing data from a project and have encrypted any data
 `php artisan migrate`
 
 Note: If you've already populated your database in a test environment and want to maintain that same data, you can simply do a dump of the database and import it from cyberpanel using phpmyadmin instead of installing with a clean database. This is entirely dependent on your project needs.
+
+### Future Pushes
+
+Your project has not been properly deployed. If you need to push more changes in the future, just rerun `git push production main` from your local environment.
