@@ -1,5 +1,5 @@
 # Laravel App Deployment
-The following is instructions on how to configure the application using Litespeed Server Environment
+The following is instructions on how to configure the application using Litespeed Server Environment with Cyberpanel
 
 ## Installation
 
